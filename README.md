@@ -2,7 +2,7 @@
 
 This **Sales Telegram Bot Data Pipeline** processes promotional flyers (letáky) from shops to extract information such as item names and prices using **YOLO models** and OCR techniques. The extracted data is then stored in **AWS DynamoDB** and the results are uploaded to **S3**. The pipeline is implemented using **Apache Airflow** to manage the workflow and integrates multiple models and services to process data efficiently.
 
-## Pipeline Workflow
+## pages_data_pipeline Workflow
 
 Here’s how the pipeline works, broken down into its key components and steps:
 
