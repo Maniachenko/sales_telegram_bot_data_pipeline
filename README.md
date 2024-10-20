@@ -1,4 +1,15 @@
-# Sales Telegram Bot Data Pipeline
+# Sales Telegram Bot Data Pipelines
+
+# ⚠️ Warning: Repository Code is Not Up to Date
+
+This repository **does not contain the most recent code** for the project. The code here serves as a base reference, but the full, updated version is not included for various reasons. 
+
+For access to the **latest code** or further inquiries about this project, please feel free to reach out via **email** at:
+
+📧 alexm08060303@gmail.com
+
+Additionally, the complete project details and code may be provided during an **interview process** if necessary.
+
 
 This **Sales Telegram Bot Data Pipeline** processes promotional flyers (letáky) from shops to extract information such as item names and prices using **YOLO models** and OCR techniques. The extracted data is then stored in **AWS DynamoDB** and the results are uploaded to **S3**. The pipeline is implemented using **Apache Airflow** to manage the workflow and integrates multiple models and services to process data efficiently.
 
