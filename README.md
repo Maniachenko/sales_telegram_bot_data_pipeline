@@ -53,6 +53,48 @@ Here’s how the pipeline works, broken down into its key components and steps:
 
 <img src="https://drive.google.com/uc?export=view&id=1n-VMhUscJuNocLv936Ks7sl2RbdiwFNu">
 
+## check_file_validity_and_update_detected_items Workflow
+
+This second pipeline is responsible for checking the validity of promotional files and updating the detection results in DynamoDB. Additionally, it sends updates to users on Telegram if there are any changes in the detected items. It works both by schedule (1 am everyday to check file validity) and after the first pipeline is finished.
+
+### 1. Validity Check and Update
+- **Task**: Scans the `pdf_metadata` DynamoDB table to check if the validity of any PDF file has changed based on the `valid_from` and `valid_to` dates (by default after pages_data_pipeline all instances are "invalid").
+- **Process**: 
+    - The pipeline retrieves the current date and compares it with the validity dates (`valid_from`, `valid_to`) of each PDF. 
+    - If a file's validity status changes (from valid to invalid or vice versa), the `valid` field in DynamoDB is updated accordingly.
+- **Function**: `check_validity_and_update_detected`
+
+### 2. Detected Items Update
+- **Task**: Updates the `detected_data` table in DynamoDB based on the files that have changed their validity status.
+- **Process**: 
+    - For files that have changed validity, the corresponding detected items in the `detected_data` table are updated to reflect the new status. 
+    - This task ensures that only the relevant detected items are updated to reduce unnecessary processing.
+- **Function**: `update_detected_items_based_on_status`
+
+### 3. Send Updates to Telegram
+- **Task**: Sends a notification via a webhook to users on Telegram. 
+- **Process**:
+    - The task retrieves the list of users who have opted to receive PDF newsletters for specific shops and sends them the updated PDF files.
+    - If a user has enabled tracking for specific items, it also sends notifications for those tracked items.
+    - The task uses batching to send updates in groups to optimize the process.
+- **Function**: `send_updates_in_telegram_task`
+
+### 4. Data Regrouping
+- **Additional Functionality**: 
+    - The pipeline includes logic to regroup data by shop and users. It categorizes users based on their preferences (shops they follow and whether they’ve enabled notifications for PDF updates).
+    - The regrouped data is used to optimize the sending of updates by only targeting relevant users.
+- **Functions**: 
+    - `regroup_by_shop`: Groups users based on their included/excluded shops.
+    - `regroup_shop_to_valid_file`: Regroups valid PDF files by shop for sending notifications.
+
+### Airflow DAG Structure
+- **Tasks**:
+    1. **Check and Update Validity**: Scans the `pdf_metadata` table and updates the `valid` field for any file whose validity has changed.
+    2. **Update Detected Items**: Updates the corresponding detected items in DynamoDB based on the validity changes.
+    3. **Send Updates in Telegram**: Sends notifications to users on Telegram based on their preferences, including PDF updates and tracked item updates.
+
+<img src="https://drive.google.com/uc?export=view&id=1R6InLx_6Tr-gisZk_R1MUXhQWyl0NhmF">
+
 ## S3 Structure
 
 The S3 bucket `salestelegrambot` stores the files related to the sales bot, organized in the following directories:
