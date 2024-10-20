@@ -51,7 +51,7 @@ Here’s how the pipeline works, broken down into its key components and steps:
     8. **Trigger Other Pipeline**: Triggers the next data pipeline once detection and processing are complete.
 
 
-<img src="https://drive.google.com/uc?export=view&id=1n-VMhUscJuNocLv936Ks7sl2RbdiwFNu" width="350" height="700">
+<img src="https://drive.google.com/uc?export=view&id=1n-VMhUscJuNocLv936Ks7sl2RbdiwFNu">
 
 ## S3 Structure
 
