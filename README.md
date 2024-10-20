@@ -33,12 +33,25 @@ Here’s how the pipeline works, broken down into its key components and steps:
 - **Process**: Each detected item is saved with fields including item name, processed item name, OCR text, item prices, and shop name. The validity of the data is also tracked.
 - **Function**: `save_item_to_dynamodb` in `s3_dynamodb_utils.py`.
 
-### 6. Airflow DAG
-- The **DAG** orchestrates the entire process:
+### 6. EC2 Handling
+- **Task**: The models required for processing (YOLO and OCR models) are deployed and run on EC2 instances.
+- **Functions**: 
+    - `run_ec2_instances`: Starts the EC2 instance.
+    - `stop_ec2_instances`: Stops the EC2 instances after processing.
+
+### 7. Airflow DAG Structure
+- **Tasks**:
     1. **Log parameters**: Logs the input parameters (filename and shop name).
     2. **PDF Splitting**: Splits the PDF into pages.
-    3. **YOLO Detection**: Detects items on the pages.
-    4. **Processing Items**: Processes the detected items (names and prices) and saves results to DynamoDB.
+    3. **Check and Start EC2**
+    4. **YOLO Detection (Model 1)**: Detects items on the pages.
+    5. **Processing Items (Model 2 + OCR)**: Processes the detected items (names and prices) and saves results to DynamoDB.
+    6. **Wait for Other Pipelines**: Waits for other pipelines to finish before stopping EC2.
+    7. **Stop EC2**: Shuts down the EC2 instance after all tasks are completed.
+    8. **Trigger Other Pipeline**: Triggers the next data pipeline once detection and processing are complete.
+
+
+<img src="https://drive.google.com/uc?export=view&id=1n-VMhUscJuNocLv936Ks7sl2RbdiwFNu" width="350" height="700">
 
 ## S3 Structure
 
