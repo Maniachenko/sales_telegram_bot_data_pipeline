@@ -95,6 +95,10 @@ This second pipeline is responsible for checking the validity of promotional fil
 
 <img src="https://drive.google.com/uc?export=view&id=1R6InLx_6Tr-gisZk_R1MUXhQWyl0NhmF">
 
+Here is how update in telegram looks like:
+<img src="https://drive.google.com/uc?export=view&id=1EpHcZRK9TuYuhBbDRQCvMZ5nR8Ie9s28">
+<img src="https://drive.google.com/uc?export=view&id=1dQeY198gterjCGivUWUV8qb4Y3YUz1nK">
+
 ## S3 Structure
 
 The S3 bucket `salestelegrambot` stores the files related to the sales bot, organized in the following directories:
